@@ -1,16 +1,64 @@
-# myapp
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
-A new Flutter project.
+void main() {
+  runApp(GeografiaApp());
+}
 
-## Getting Started
+class GeografiaApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Geografia Interativa',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      debugShowCheckedModeBanner: false,
+      home: TelaInicial(),
+    );
+  }
+}
 
-This project is a starting point for a Flutter application.
+class TelaInicial extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Geografia Interativa')),
+      body: Column(
+        children: [
+          Expanded(
+            child: FlutterMap(
+              options: MapOptions(
+                center: LatLng(-14.235, -51.9253), // Coordenadas do Brasil
+                zoom: 4.5,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                ),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TelaQuiz()));
+            },
+            child: Text('Ir para o Quiz'),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+class TelaQuiz extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Quiz de Geografia')),
+      body: Center(
+        child: Text('Aqui serão exibidas perguntas interativas!', style: TextStyle(fontSize: 20)),
+      ),
+    );
+  }
+}
